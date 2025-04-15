@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}
 
     steps:
       - name: Checkout ZMK Config
@@ -22,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: zmkfirmware/zmk
-          path: zmk
+          path: firmware
           submodules: true
 
       - name: Set up Python
@@ -33,15 +30,14 @@ jobs:
       - name: Install West + Dependencies
         run: |
           pip install west
-          cd $GITHUB_WORKSPACE
-          west init -l zmk
+          west init -l firmware
           west update
           west zephyr-export
-          pip install -r zmk/app/requirements.txt
+          pip install -r firmware/app/requirements.txt
 
       - name: Build Left Half
         run: |
-          west build -s zmk/app -b nice_nano_v2 -- -DSHIELD=robinkey -DZMK_CONFIG=$GITHUB_WORKSPACE/config
+          west build -s firmware/app -b nice_nano_v2 -- -DSHIELD=robinkey -DZMK_CONFIG=$(pwd)/config
 
       - name: Upload Left Firmware
         uses: actions/upload-artifact@v4
@@ -54,7 +50,7 @@ jobs:
 
       - name: Build Right Half
         run: |
-          west build -s zmk/app -b nice_nano_v2 -- -DSHIELD=robinkey -DZMK_CONFIG=$GITHUB_WORKSPACE/config -DSHIELD_RIGHT=1
+          west build -s firmware/app -b nice_nano_v2 -- -DSHIELD=robinkey -DZMK_CONFIG=$(pwd)/config -DSHIELD_RIGHT=1
 
       - name: Upload Right Firmware
         uses: actions/upload-artifact@v4
