@@ -28,14 +28,14 @@ jobs:
       - name: Install West + Dependencies
         run: |
           pip install west
-          west init -l config
+          west init -l .
           west update
           west zephyr-export
           pip install -r zmk/app/requirements.txt
 
       - name: Build Left Half
         run: |
-          west build -s zmk/app -b nice_nano_v2 -- -DSHIELD=robinkey -DZMK_CONFIG=$(pwd)/config
+          west build -s zmk/app -b nice_nano_v2 -- -DSHIELD=robinkey -DZMK_CONFIG=$(pwd)
 
       - name: Upload Left Firmware
         uses: actions/upload-artifact@v4
@@ -48,7 +48,7 @@ jobs:
 
       - name: Build Right Half
         run: |
-          west build -s zmk/app -b nice_nano_v2 -- -DSHIELD=robinkey -DZMK_CONFIG=$(pwd)/config -DSHIELD_RIGHT=1
+          west build -s zmk/app -b nice_nano_v2 -- -DSHIELD=robinkey -DZMK_CONFIG=$(pwd) -DSHIELD_RIGHT=1
 
       - name: Upload Right Firmware
         uses: actions/upload-artifact@v4
