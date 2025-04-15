@@ -27,12 +27,6 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Show File Structure (Debug)
-        run: |
-          echo "Current directory: $(pwd)"
-          ls -R
-        working-directory: ${{ github.workspace }}
-
       - name: Install West + Dependencies
         working-directory: ${{ github.workspace }}
         run: |
