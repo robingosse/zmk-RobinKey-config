@@ -57,5 +57,3 @@ jobs:
         with:
           name: firmware-right
           path: build/zephyr/zmk.uf2
-
-          Fix broken workflow – replace reuse with inline
