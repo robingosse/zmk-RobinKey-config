@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}
 
     steps:
       - name: Checkout ZMK Config
@@ -31,6 +28,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install West + Dependencies
+        working-directory: ${{ github.workspace }}
         run: |
           pip install west
           west init -l firmware
@@ -39,6 +37,7 @@ jobs:
           pip install -r firmware/app/requirements.txt
 
       - name: Build Left Half
+        working-directory: ${{ github.workspace }}
         run: |
           west build -s firmware/app -b nice_nano_v2 -- -DSHIELD=robinkey -DZMK_CONFIG=${{ github.workspace }}/config
 
@@ -49,9 +48,11 @@ jobs:
           path: build/zephyr/zmk.uf2
 
       - name: Clean Build
+        working-directory: ${{ github.workspace }}
         run: rm -rf build
 
       - name: Build Right Half
+        working-directory: ${{ github.workspace }}
         run: |
           west build -s firmware/app -b nice_nano_v2 -- -DSHIELD=robinkey -DZMK_CONFIG=${{ github.workspace }}/config -DSHIELD_RIGHT=1
 
