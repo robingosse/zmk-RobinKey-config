@@ -1,0 +1,6 @@
+/ {
+  keymap {
+    compatible = "zmk,keymap";
+    label = "ROBINKKEY";
+  };
+};
